@@ -10,8 +10,8 @@ const { SESSION_SECRET, HOST, HOSTNAME } = process.env;
 // require third-party node modules
 import jwt from 'jwt-simple';
 import crypto from 'crypto';
-// import randomstring from 'randomstring';
 import User from 'entity/User';
+import proc from 'child_process';
 
 export { getDomainName, randomString, generateToken, createJwtToken, removeAllWhiteSpace };
 
@@ -63,12 +63,14 @@ function generateToken(len = 64) {
 }
 
 function createJwtToken(user: User, client: string) {
+  // const hours = 6;
   return jwt.encode(
     {
       sub: user.id,
       iss: HOSTNAME,
       aud: client,
       iat: new Date().getTime(),
+      // exp: Math.round(Date.now() / 1000 + hours * 60 * 60), // token expires in 6 hours
     },
     SESSION_SECRET
   );

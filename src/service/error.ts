@@ -16,6 +16,11 @@ import { ZodError } from 'zod';
  * You can choose which message you want to use by passing in the message index to the errorResponse method
  * Add more custom global error codes here
  */
+type Error = {
+  errorCode: string;
+  status: number;
+};
+
 const GLOBAL_ERRORS = {
   INVALID_ARGUMENTS: {
     errorCode: 'INVALID_ARGUMENTS',
@@ -51,6 +56,21 @@ const GLOBAL_ERRORS = {
     errorCode: 'INVALID_PASSWORD_FORMAT',
     status: 400,
   },
+
+  INVALID_LOGIN_CREDENTIALS: {
+    errorCode: 'INVALID_LOGIN_CREDENTIALS',
+    status: 400,
+  },
+
+  INVALID_EMAIL_CONFIRMATION_TOKEN: {
+    errorCode: 'INVALID_EMAIL_CONFIRMATION_TOKEN',
+    status: 400,
+  },
+
+  EMAIL_ALREADY_CONFIRMED: {
+    errorCode: 'EMAIL_ALREADY_CONFIRMED',
+    status: 400,
+  },
 };
 
 const ERRORS = {
@@ -59,7 +79,7 @@ const ERRORS = {
 
 export { ERRORS, errorResponse, classValidatorErrorMessage, zodErrorMessage };
 
-function errorResponse(req: IRequest, error, errorMessage?: string) {
+function errorResponse(req: any, error, errorMessage?: string) {
   return {
     success: false,
     status: error.status,
@@ -69,10 +89,7 @@ function errorResponse(req: IRequest, error, errorMessage?: string) {
 }
 
 function zodErrorMessage(error: ZodError): string {
-  
-  const formatted = error.format();
-  console.log(error)
-  return formatted._errors.join(',');
+  return error.issues.map(({ path, message }) => `${path.join('->')}:${message}`).join(',');
 }
 
 function classValidatorErrorMessage(errors: ValidationError[]) {

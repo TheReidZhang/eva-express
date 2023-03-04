@@ -1,7 +1,7 @@
 const { NODE_ENV } = process.env;
 
 import http from 'http';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import morgan from 'morgan';
 import sslRedirect from 'heroku-ssl-redirect';
 import helmet from 'helmet';
@@ -13,6 +13,7 @@ import path from 'path';
 import i18n from 'i18n';
 import router from 'routes';
 import args from 'middleware/args';
+import auth from 'middleware/auth';
 
 // import 'reflect-metadata';
 
@@ -57,6 +58,7 @@ async function createServer() {
 
   app.use(exit.middleware);
   app.use(args.attach); // set req.args
+  app.use(auth);
 
   app.use('/', router); // place routes here
 

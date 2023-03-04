@@ -13,6 +13,9 @@ declare global {
       NODE_ENV: 'development' | 'production' | 'test';
       REDIS_URL: string;
       REDIS_CLOUD_URL: string;
+      ACCESS_TOKEN_SECRET: string;
+      REFRESH_TOKEN_SECRET: string;
+      USER_WEBAPP_URL: string;
     }
   }
 
@@ -21,4 +24,6 @@ declare global {
     user?: User;
     admin?: any;
   }
+
+  interface IResponse extends Response {}
 }

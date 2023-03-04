@@ -5,7 +5,7 @@ import { validate } from 'class-validator';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
 
-export default async function (req: IRequest, res: Response) {
+export default async function (req: IRequest, res: IResponse) {
   const schema = z.object({
     email: z
       .string()
@@ -24,8 +24,8 @@ export default async function (req: IRequest, res: Response) {
   if (!result.success) {
     return errorResponse(req, ERRORS.INVALID_ARGUMENTS, zodErrorMessage(result.error));
   }
-  const typedArgs = result.data;
-  const { email, password, firstName, lastName, gender, timezone, locale, phone } = typedArgs;
+  const args = result.data;
+  const { email, password, firstName, lastName, gender, timezone, locale, phone } = args;
 
   const existingUser = await entities.user.findOne({
     where: {

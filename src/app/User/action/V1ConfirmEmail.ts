@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
-import entities from 'entities';
+import models from 'models';
 
 export default async function V1ConfirmEmail(req: IRequest) {
   const schema = z.object({
@@ -14,8 +14,8 @@ export default async function V1ConfirmEmail(req: IRequest) {
   const args = result.data;
   const { emailConfirmToken } = args;
 
-  return await entities.dataSource.transaction(async transactionalEntityManager => {
-    const foundUser = await transactionalEntityManager.findOne(entities.user, {
+  return await models.dataSource.transaction(async transactionalEntityManager => {
+    const foundUser = await transactionalEntityManager.findOne(models.user, {
       where: {
         emailConfirmToken,
       },

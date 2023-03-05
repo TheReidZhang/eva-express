@@ -11,7 +11,6 @@ const { SESSION_SECRET, HOST, HOSTNAME } = process.env;
 import jwt from 'jwt-simple';
 import crypto from 'crypto';
 import User from 'entity/User';
-import proc from 'child_process';
 
 export { getDomainName, randomString, generateToken, createJwtToken, removeAllWhiteSpace };
 

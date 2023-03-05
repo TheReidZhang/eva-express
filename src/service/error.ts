@@ -77,7 +77,7 @@ const ERRORS = {
   ...GLOBAL_ERRORS,
 };
 
-export { ERRORS, errorResponse, classValidatorErrorMessage, zodErrorMessage };
+export { ERRORS, errorResponse, classValidatorErrorMessage, zodErrorMessage, queueError };
 
 function errorResponse(req: any, error, errorMessage?: string) {
   return {
@@ -94,4 +94,8 @@ function zodErrorMessage(error: ZodError): string {
 
 function classValidatorErrorMessage(errors: ValidationError[]) {
   return errors.map(error => JSON.stringify(error.constraints)).join(',');
+}
+
+async function queueError(error, queue, job?) {
+  console.error(error);
 }

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import entities from 'entities';
+import models from 'models';
 import { validate } from 'class-validator';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
@@ -26,14 +26,14 @@ export default async function (req: IRequest) {
   const args = result.data;
   const { email, password, firstName, lastName, gender, timezone, locale, phone } = args;
 
-  const existingUser = await entities.user.findOne({
+  const existingUser = await models.user.findOne({
     where: {
       email,
     },
   });
   if (existingUser) return errorResponse(req, ERRORS.USER_ALREADY_EXISTS);
 
-  const user = entities.user.create({
+  const user = models.user.create({
     email,
     password,
     firstName,

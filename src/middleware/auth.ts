@@ -2,7 +2,7 @@ const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
 
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import entities from 'entities';
+import models from 'models';
 import { Payload } from 'helper/types';
 import { ERRORS, errorResponse } from 'service/error';
 
@@ -14,13 +14,13 @@ async function auth(req: Request, res: Response, next: Function) {
       const { id, role } = jwt.verify(token, ACCESS_TOKEN_SECRET) as Payload;
       switch (role) {
         // case 'admin':
-        //   const admin = await entities.admin.findOneBy({
+        //   const admin = await models.admin.findOneBy({
         //     id: id,
         //   });
         //   req.admin = admin;
         //   break;
         case 'user':
-          const user = await entities.user.findOneByOrFail({
+          const user = await models.user.findOneByOrFail({
             id: id,
           });
           req['user'] = user;
@@ -50,14 +50,14 @@ export default auth;
 
 //       switch (payload.role) {
 //         case 'user':
-//           const user = await entities.user.findOneBy({
+//           const user = await models.user.findOneBy({
 //             id: payload.id,
 //           });
 //           if (user) req.user = user;
 //           else throw new Error('Login required');
 //           break;
 //         // case 'admin':
-//         //   const admin = await entities.admin.findOneBy({
+//         //   const admin = await models.admin.findOneBy({
 //         //     id: payload.id,
 //         //   });
 //         //   if (admin) req.admin = admin;

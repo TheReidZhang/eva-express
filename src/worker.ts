@@ -1,6 +1,6 @@
 import os from 'os';
 import throng from 'throng';
-import entities from 'entities';
+import models from 'models';
 import queue from 'service/queue';
 import UserWorker from 'app/User/worker';
 import _ from 'lodash';
@@ -20,7 +20,7 @@ async function startWorker(processId) {
 
   // to check if database connection is established
   try {
-    await entities.dataSource.initialize();
+    await models.dataSource.initialize();
   } catch (error) {
     console.error('Fail to establish connection to the database', error);
     process.exit(1);
@@ -39,7 +39,7 @@ async function startWorker(processId) {
     console.log('All queue connections closed.');
 
     // close connection to database
-    await entities.dataSource.destroy();
+    await models.dataSource.destroy();
     console.log('Database connections closed.');
 
     // exit

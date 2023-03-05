@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import bcrypt from 'bcrypt';
-import entities from 'entities';
+import models from 'models';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { createAccessToken, createRefreshToken } from 'helper/auth';
 
@@ -21,7 +21,7 @@ export default async function (req: IRequest, res: IResponse) {
   const args = result.data;
   const { email, password } = args;
 
-  const existingUser = await entities.user.findOne({
+  const existingUser = await models.user.findOne({
     where: {
       email,
     },

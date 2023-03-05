@@ -9,7 +9,7 @@ const { NODE_ENV } = process.env; // get node env
 // services
 import queue from 'service/queue';
 import { Server } from 'http';
-import entities from 'entities';
+import models from 'models';
 import { ERRORS, errorResponse } from 'service/error';
 
 // whether server is shutting down or not
@@ -33,7 +33,7 @@ async function gracefulExit(server: Server) {
     await queue.closeAll();
     console.log('All queue connections are closed.');
 
-    await entities.dataSource.destroy();
+    await models.dataSource.destroy();
     console.log('Database connection is closed.');
 
     // close socket io connection

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { Job } from 'bull';
-import entities from 'entities';
+import models from 'models';
 import { createJwtToken, generateToken } from 'helper/logic';
 import email from 'service/email';
 import UserConfirmEmailEmail, { UserConfirmEmailEmailProps } from '../email/UserEmailConfirmEmail';
@@ -16,8 +16,8 @@ export default async function V1SendUserEmailConfirmEmail(job: Job) {
   const args = result.data;
   const { id } = args;
 
-  await entities.dataSource.transaction(async transactionalEntityManager => {
-    const foundUser = await transactionalEntityManager.findOne(entities.user, {
+  await models.dataSource.transaction(async transactionalEntityManager => {
+    const foundUser = await transactionalEntityManager.findOne(models.user, {
       where: {
         id,
       },

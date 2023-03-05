@@ -13,12 +13,12 @@ export default async function (req: IRequest, res: IResponse) {
       .transform(val => val.toLocaleLowerCase()),
     password: z.string(),
   });
+
   const result = schema.safeParse(req.args);
   if (!result.success) {
     return errorResponse(req, ERRORS.INVALID_ARGUMENTS, zodErrorMessage(result.error));
   }
   const args = result.data;
-
   const { email, password } = args;
 
   const existingUser = await entities.user.findOne({
@@ -30,7 +30,6 @@ export default async function (req: IRequest, res: IResponse) {
   if (!existingUser) return errorResponse(req, ERRORS.INVALID_LOGIN_CREDENTIALS);
 
   const isCorrectPassword = bcrypt.compareSync(password, existingUser.password);
-
   if (!isCorrectPassword) return errorResponse(req, ERRORS.INVALID_LOGIN_CREDENTIALS);
 
   const accessToken = createAccessToken({ id: existingUser.id, role: 'user' });

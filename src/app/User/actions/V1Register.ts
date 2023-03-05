@@ -1,11 +1,10 @@
-import { Response } from 'express';
 import { z } from 'zod';
 import entities from 'entities';
 import { validate } from 'class-validator';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
 
-export default async function (req: IRequest, res: IResponse) {
+export default async function (req: IRequest) {
   const schema = z.object({
     email: z
       .string()

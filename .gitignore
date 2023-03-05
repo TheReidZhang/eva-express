@@ -8,12 +8,12 @@ dist/
 .vscode
 
 # config
-config/.env.dev
-config/.env.development
-config/.env.prod
-config/.env.production
-config/.env.staging
-config/.env.test
+env/.env.dev
+env/.env.development
+env/.env.prod
+env/.env.production
+env/.env.staging
+env/.env.test
 
 # Mac OS X Hidden Files
 .DS_Store

@@ -1,21 +1,7 @@
-/**
- * Queue Service for Background Jobs
- *
- * We need to make a wrapper around queues because there is no way to close connections safely
- *
- * Bull: https://optimalbits.github.io/bull/
- * Bull Reference: https://github.com/OptimalBits/bull/blob/41ec58ef2233074fc1403d448270cd2122741fe1/REFERENCE.md
- *
- * TODO: TEST
- */
-
-'use strict';
-
-// ENV variables
-const { REDIS_URL, REDISCLOUD_URL, NODE_ENV } = process.env;
-
-// third-party
+import env from 'service/env'
 import Bull, { Queue } from 'bull'; // add background tasks to Queue: https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueclean
+
+const { REDIS_URL, NODE_ENV } = env
 
 // Store all queues here
 const QUEUES: Record<string, any> = {};
@@ -31,7 +17,7 @@ export default { QUEUES, get, getAll, closeAll };
 function get(name: string): Queue {
   if (!QUEUES[name]) {
     QUEUES[name] = new Bull(name, {
-      redis: REDIS_URL || REDISCLOUD_URL,
+      redis: REDIS_URL
     });
   }
 

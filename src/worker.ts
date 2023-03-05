@@ -1,3 +1,4 @@
+import env from 'service/env';
 import os from 'os';
 import throng from 'throng';
 import models from 'models';
@@ -5,7 +6,7 @@ import queue from 'service/queue';
 import UserWorker from 'app/User/worker';
 import _ from 'lodash';
 
-const { NODE_ENV, WEB_CONCURRENCY } = process.env;
+const { NODE_ENV, WEB_CONCURRENCY } = env;
 const PROCESSES = NODE_ENV === 'production' ? WEB_CONCURRENCY || os.cpus().length : 1;
 
 // Store all worker routes here

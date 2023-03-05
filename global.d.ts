@@ -7,22 +7,21 @@ declare global {
   // var adminFixFn = () => any; // can only use var, let does not work here
   /*eslint-enable */
   namespace NodeJS {
-    interface ProcessEnv {
-      HOST: string;
-      SESSION_SECRET: string;
-      NODE_ENV: 'development' | 'production' | 'test';
-      REDIS_URL: string;
-      REDIS_CLOUD_URL: string;
-      ACCESS_TOKEN_SECRET: string;
-      REFRESH_TOKEN_SECRET: string;
-      USER_WEBAPP_URL: string;
-
-      MAILER_HOST: string;
-      MAILER_PORT: string;
-      MAILER_AUTH_USER: string;
-      MAILER_AUTH_PASS: string;
-      MAILER_DOMAIN: string;
-    }
+    // interface ProcessEnv {
+    //   HOST: string;
+    //   SESSION_SECRET: string;
+    //   NODE_ENV: 'development' | 'production' | 'test';
+    //   REDIS_URL: string;
+    //   REDIS_CLOUD_URL: string;
+    //   ACCESS_TOKEN_SECRET: string;
+    //   REFRESH_TOKEN_SECRET: string;
+    //   USER_WEBAPP_URL: string;
+    //   MAILER_HOST: string;
+    //   MAILER_PORT: string;
+    //   MAILER_AUTH_USER: string;
+    //   MAILER_AUTH_PASS: string;
+    //   MAILER_DOMAIN: string;
+    // }
   }
 
   interface IRequest extends Request {

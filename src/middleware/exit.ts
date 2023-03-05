@@ -1,16 +1,10 @@
-/**
- * Middleware for graceful exit
- */
-
-'use strict';
-
-const { NODE_ENV } = process.env; // get node env
-
-// services
+import env from 'service/env';
 import queue from 'service/queue';
 import { Server } from 'http';
 import models from 'models';
 import { ERRORS, errorResponse } from 'service/error';
+
+const { NODE_ENV } = env;
 
 // whether server is shutting down or not
 let isShuttingDown = false;

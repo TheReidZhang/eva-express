@@ -60,6 +60,7 @@ async function send<TemplateProps>({
   bccs = _.uniq(bccs);
 
   const { html, json, errors } = render(email(args));
+  if (errors.length > 0) throw new Error('MJML render error: ' + errors);
 
   // create message
   // Docs: https://nodemailer.com/message/addresses/

@@ -1,11 +1,9 @@
-'use strict';
-
 import os from 'os';
 import throng from 'throng';
 import _ from 'lodash';
 
-import createServer from 'server';
 import entities from 'entities';
+import createServer from 'server';
 import exit from 'middleware/exit';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -13,8 +11,7 @@ const PORT = _.toNumber(process.env.PORT) || 8000;
 const PROCESSES = NODE_ENV === 'production' ? _.toNumber(process.env.WEB_CONCURRENCY) || os.cpus().length : 1;
 
 async function startServer(processId: number) {
-  // create server
-  const server = await createServer(); // get server
+  const server = await createServer();
 
   try {
     await entities.dataSource.initialize();

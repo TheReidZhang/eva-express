@@ -2,7 +2,7 @@ import os from 'os';
 import throng from 'throng';
 import _ from 'lodash';
 
-import entities from 'entities';
+import models from 'models';
 import createServer from 'server';
 import exit from 'middleware/exit';
 
@@ -14,7 +14,7 @@ async function startServer(processId: number) {
   const server = await createServer();
 
   try {
-    await entities.dataSource.initialize();
+    await models.dataSource.initialize();
   } catch (error) {
     console.error('Fail to establish connection to the database', error);
     process.exit(1);

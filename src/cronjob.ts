@@ -1,6 +1,8 @@
-const { NODE_ENV, REDIS_URL } = process.env;
-
+import env from 'service/env';
 import cron from 'cron';
+
+const { NODE_ENV } = env;
+
 const CronJob = cron.CronJob;
 
 // services

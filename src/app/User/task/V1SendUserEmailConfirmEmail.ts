@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { Job } from 'bull';
 import models from 'models';
-import { createJwtToken, generateToken } from 'helper/logic';
+import { generateToken } from 'helper/logic';
 import email from 'service/email';
 import UserConfirmEmailEmail, { UserConfirmEmailEmailProps } from '../email/UserEmailConfirmEmail';
 
 export default async function V1SendUserEmailConfirmEmail(job: Job) {
+  console.log(`V1SendUserEmailConfirmEmail - ${job.id}`);
   const schema = z.object({
     id: z.string(),
   });

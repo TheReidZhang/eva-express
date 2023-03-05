@@ -3,6 +3,9 @@ import models from 'models';
 import { validate } from 'class-validator';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
+import queue from 'service/queue';
+
+const UserQueue = queue.get('UserQueue');
 
 export default async function (req: IRequest) {
   const schema = z.object({
@@ -50,6 +53,8 @@ export default async function (req: IRequest) {
   } else {
     await user.save();
   }
+
+  await UserQueue.add('V1SendUserEmailConfirmEmail', { id: user.id });
 
   return {
     status: 200,

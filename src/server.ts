@@ -1,5 +1,4 @@
-const { NODE_ENV } = process.env;
-
+import env from 'service/env';
 import http from 'http';
 import express from 'express';
 import morgan from 'morgan';
@@ -14,6 +13,8 @@ import i18n from 'i18n';
 import router from 'routes';
 import args from 'middleware/args';
 import auth from 'middleware/auth';
+
+const { NODE_ENV } = env;
 
 async function createServer() {
   // set up express app

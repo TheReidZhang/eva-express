@@ -1,5 +1,4 @@
-const { NODE_ENV, MAILER_HOST, MAILER_PORT, MAILER_AUTH_USER, MAILER_AUTH_PASS, MAILER_DOMAIN } = process.env;
-
+import env from 'service/env';
 import { renderToMjml } from '@faire/mjml-react/utils/renderToMjml';
 import mjml2html from 'mjml';
 import { MJMLParseResults } from 'mjml-core';
@@ -7,7 +6,9 @@ import { ReactElement } from 'react';
 import Mail, { Attachment } from 'nodemailer/lib/mailer';
 import nodemailer from 'nodemailer';
 import _ from 'lodash';
-import htmlToText from 'html-to-text';
+import * as htmlToText from 'html-to-text';
+
+const { NODE_ENV, MAILER_HOST, MAILER_PORT, MAILER_AUTH_USER, MAILER_AUTH_PASS, MAILER_DOMAIN } = env;
 
 const emails = {
   communication: { address: `communication@${MAILER_DOMAIN}`, name: 'Nitra' },
@@ -96,8 +97,8 @@ async function send<TemplateProps>({
    */
   const transporter = nodemailer.createTransport({
     host: MAILER_HOST,
-    port: Number(MAILER_PORT),
-    secure: MAILER_PORT === '465', // true for 465, false for other ports
+    port: MAILER_PORT,
+    secure: MAILER_PORT === 465, // true for 465, false for other ports
     auth: {
       user: MAILER_AUTH_USER, // generated ethereal user
       pass: MAILER_AUTH_PASS, // generated ethereal password

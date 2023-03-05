@@ -1,8 +1,9 @@
-const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env;
-
+import env from 'service/env';
 import { sign } from 'jsonwebtoken';
 import { Payload, Role } from './types';
 import { ERRORS, errorResponse } from 'service/error';
+
+const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = env;
 
 export { createAccessToken, createRefreshToken, routerHandlerWrapper };
 

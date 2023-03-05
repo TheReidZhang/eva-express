@@ -1,3 +1,4 @@
+// Auth
 type Role = 'admin' | 'user';
 type Payload = {
   id: string;

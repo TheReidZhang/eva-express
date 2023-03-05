@@ -1,7 +1,7 @@
 const { NODE_ENV } = process.env;
 
 import http from 'http';
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import morgan from 'morgan';
 import sslRedirect from 'heroku-ssl-redirect';
 import helmet from 'helmet';
@@ -14,8 +14,6 @@ import i18n from 'i18n';
 import router from 'routes';
 import args from 'middleware/args';
 import auth from 'middleware/auth';
-
-// import 'reflect-metadata';
 
 async function createServer() {
   // set up express app

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { routerHandlerWrapper } from 'helper/auth';
-import V1Register from './actions/V1Register';
-import V1Login from './actions/V1Login';
+import V1Register from './action/V1Register';
+import V1Login from './action/V1Login';
 const router = Router();
 
 // define the about route

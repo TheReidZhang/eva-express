@@ -5,10 +5,20 @@ const NodeEnvType = ['development', 'production', 'test', 'staging'] as const;
 const BooleanType = ['true', 'false'] as const;
 
 const schema = z.object({
+  // Express
   NODE_ENV: z.enum(NodeEnvType),
   PORT: z.string().regex(NumberRegex).transform(Number),
   WEB_CONCURRENCY: z.string().regex(NumberRegex).transform(Number).optional(),
 
+  // Auth
+  ACCESS_TOKEN_SECRET: z.string(),
+  REFRESH_TOKEN_SECRET: z.string(),
+
+  // Rate Limit
+  RATE_LIMIT_WINDOW_MS: z.string().regex(NumberRegex).default('60000').transform(Number),
+  RATE_LIMIT_MAX_PER_WINDOW: z.string().regex(NumberRegex).default('60').transform(Number),
+
+  // DB
   DATABASE_URL: z.string().url(),
   DB_SSL: z
     .enum(BooleanType)
@@ -23,20 +33,20 @@ const schema = z.object({
     .default('false')
     .transform(val => val === 'true'),
 
+  // Redis
   REDIS_URL: z.string().url(),
 
+  // Email
   MAILER_DOMAIN: z.string(),
   MAILER_HOST: z.string(),
   MAILER_PORT: z.string().regex(NumberRegex).transform(Number),
   MAILER_AUTH_USER: z.string().email(),
   MAILER_AUTH_PASS: z.string(),
 
+  // Sms
   TWILIO_ACCOUNT_SID: z.string(),
   TWILIO_AUTH_TOKEN: z.string(),
   TWILIO_NUMBER: z.string(),
-
-  ACCESS_TOKEN_SECRET: z.string(),
-  REFRESH_TOKEN_SECRET: z.string(),
 });
 
 // REDISCLOUD_URL also considered as REDIS_URL

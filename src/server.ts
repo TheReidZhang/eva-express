@@ -13,11 +13,13 @@ import i18n from 'i18n';
 import router from 'routes';
 import args from 'middleware/args';
 import auth from 'middleware/auth';
+import socket from 'service/socket';
+import error from 'middleware/error';
+import limiter from 'service/limiter';
 
 const { NODE_ENV } = env;
 
 async function createServer() {
-  // set up express app
   const app = express();
 
   // Disable the "Powered-By" header to prevent showing hackers what infra we use
@@ -26,11 +28,19 @@ async function createServer() {
   const newServer = http.createServer(app);
   app.use(express.json());
 
+  const io = await socket.get(newServer);
+
   // enable ssl redirect in production
   app.use(sslRedirect());
 
   // need to enable this in production because Heroku uses a reverse proxy
   if (NODE_ENV === 'production') app.set('trust proxy', 1); // get ip address using req.ip
+
+  // This is just so we don't have to worry about shutting down the redis connection for the rate limiter, which has mem leaks in testing
+  if (NODE_ENV === 'production') {
+    const rateLimiter = await limiter.get();
+    app.use(rateLimiter);
+  }
 
   // log requests using morgan, don't log in test env
   if (NODE_ENV !== 'test') app.use(morgan('dev'));
@@ -60,6 +70,9 @@ async function createServer() {
   app.use(auth);
 
   app.use('/', router); // place routes here
+
+  app.use(error);
+  io.on('connection', socket.connect);
 
   return newServer;
 }

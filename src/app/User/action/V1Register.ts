@@ -46,13 +46,7 @@ export default async function (req: IRequest) {
     locale,
     phone,
   });
-
-  const schemaErrors = await validate(user);
-  if (schemaErrors.length > 0) {
-    throw new Error(`Validation failed!`);
-  } else {
-    await user.save();
-  }
+  await user.save();
 
   await UserQueue.add('V1SendUserEmailConfirmEmail', { id: user.id });
 

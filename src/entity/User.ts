@@ -2,14 +2,16 @@
 
 // third-party node modules
 import bcrypt from 'bcrypt';
+import { Mixin } from 'ts-mixer';
 import { Entity, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
 
 // helpers
 import { GENDER, GENDER_LIST, LOCALE, LOCALE_LIST, PASSWORD_LENGTH_MIN, TIMEZONE_LIST } from 'helper/constant';
-import Base from './Base';
+import Base from 'entity/abstract/Base';
+import Email from 'entity/abstract/Email';
 
 @Entity()
-class User extends Base {
+class User extends Email(Base) {
   @Column({ type: 'character varying' })
   firstName: string;
 
@@ -32,23 +34,6 @@ class User extends Base {
   lastLoginAt: Date | null;
 
   // EMAIL
-  @Column({ type: 'character varying', unique: true })
-  email: string;
-
-  @Column({ type: 'boolean', default: false })
-  isEmailConfirmed: boolean;
-
-  @Column({ type: 'character varying', nullable: true, unique: true })
-  emailConfirmToken: string | null;
-
-  @Column({ type: 'character varying', nullable: true, unique: true })
-  emailUpdateToken: string | null;
-
-  @Column({ type: 'timestamp without time zone', nullable: true })
-  emailUpdateTokenExpiredAt: Date | null;
-
-  @Column({ type: 'character varying', nullable: true })
-  updatedEmail: string | null;
 
   // PHONE
   @Column({ type: 'character varying', nullable: true })

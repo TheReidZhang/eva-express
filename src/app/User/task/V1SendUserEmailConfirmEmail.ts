@@ -27,6 +27,7 @@ export default async function V1SendUserEmailConfirmEmail(job: Job) {
     if (!foundUser || foundUser.isEmailConfirmed) return;
 
     foundUser.emailConfirmToken = generateToken();
+    foundUser.emailConfirmTokenSentAt = new Date();
     await transactionalEntityManager.save(foundUser);
     await email.send<UserConfirmEmailEmailProps>({
       from: email.emails.doNotReply.address,

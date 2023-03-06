@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, BaseEntity } from 'typeorm';
-import { Constructor } from './types';
+import { Constructor } from './type';
 
 function Base<TBase extends Constructor>(Base: TBase) {
   abstract class AbstractBase extends Base {

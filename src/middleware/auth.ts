@@ -2,7 +2,7 @@ import env from 'service/env';
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import models from 'models';
-import { Payload } from 'helper/types';
+import { Payload } from 'helper/type';
 import { ERRORS, errorResponse } from 'service/error';
 
 const { ACCESS_TOKEN_SECRET } = env;

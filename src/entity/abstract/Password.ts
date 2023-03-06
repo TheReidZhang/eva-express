@@ -1,5 +1,5 @@
 import { BeforeInsert, BeforeUpdate, Check, Column } from 'typeorm';
-import { Constructor } from './types';
+import { Constructor } from './type';
 import bcrypt from 'bcrypt';
 import { PASSWORD_LENGTH_MIN } from 'helper/constant';
 

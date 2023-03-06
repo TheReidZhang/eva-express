@@ -1,9 +1,4 @@
-'use strict';
-
-// third-party node modules
-import bcrypt from 'bcrypt';
-import { Mixin } from 'ts-mixer';
-import { Entity, Column, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 
 // helpers
 import { GENDER, GENDER_LIST, LOCALE, LOCALE_LIST, PASSWORD_LENGTH_MIN, TIMEZONE_LIST } from 'helper/constant';

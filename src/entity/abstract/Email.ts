@@ -1,5 +1,5 @@
 import { Check, Column } from 'typeorm';
-import { Constructor } from './types';
+import { Constructor } from './type';
 
 function Email<TBase extends Constructor>(Base: TBase) {
   @Check(`

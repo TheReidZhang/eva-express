@@ -10,6 +10,7 @@ const { NODE_ENV, DATABASE_URL, DB_SSL, RUNNING_SCRIPT, TYPEORM_CLI } = env;
 const AppDataSource = new DataSource({
   type: 'postgres',
   url: DATABASE_URL,
+  useUTC: true,
   dropSchema: NODE_ENV === 'test',
   synchronize: NODE_ENV === 'test',
   logging: false,

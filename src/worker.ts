@@ -10,7 +10,7 @@ const { NODE_ENV, WEB_CONCURRENCY } = env;
 const PROCESSES = NODE_ENV === 'production' ? WEB_CONCURRENCY || os.cpus().length : 1;
 
 // Store all worker routes here
-const workerRoutes = [UserWorker];
+const workers = [...UserWorker];
 
 // function to start app
 async function startWorker(processId) {
@@ -30,9 +30,6 @@ async function startWorker(processId) {
   // GlobalQueue
   queue.get('GlobalQueue');
 
-  // Initiate and run all feature workers
-  workerRoutes.forEach(worker => worker());
-
   // Graceful exit
   process.on('SIGTERM', async () => {
     // close connection to queue
@@ -42,6 +39,9 @@ async function startWorker(processId) {
     // close connection to database
     await models.dataSource.destroy();
     console.log('Database connections closed.');
+
+    for (const worker of workers) await worker.close();
+    console.log('All worker connections closed.');
 
     // exit
     process.exit(0);

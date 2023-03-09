@@ -1,41 +1,40 @@
-import env from 'service/env'
-import Bull, { Queue } from 'bull'; // add background tasks to Queue: https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueclean
+import env from 'service/env';
+import Bull, { Queue, QueueEvents } from 'bullmq'; // add background tasks to Queue: https://github.com/OptimalBits/bull/blob/develop/REFERENCE.md#queueclean
+import IORedis from 'ioredis';
+import { queueError } from './error';
 
-const { REDIS_URL, NODE_ENV } = env
+const { REDIS_URL, NODE_ENV } = env;
 
 // Store all queues here
-const QUEUES: Record<string, any> = {};
+const QUEUES: Record<string, { queue: Queue; queueEvents: QueueEvents }> = {};
 
-export default { QUEUES, get, getAll, closeAll };
-/**
- * Return a queue, create if does not exists yet
- *
- * @name - (STRING - REQUIRED): The name of the queue
- *
- * return: a queue
- */
-function get(name: string): Queue {
+const connection = new IORedis(REDIS_URL, { maxRetriesPerRequest: null });
+
+function get(name: string) {
   if (!QUEUES[name]) {
-    QUEUES[name] = new Bull(name, {
-      redis: REDIS_URL
+    const queue = new Queue(name, {
+      connection,
     });
+    const queueEvents = new QueueEvents(name, { connection });
+    QUEUES[name] = {
+      queue,
+      queueEvents,
+    };
+
+    queueEvents.on('failed', async ({ jobId, failedReason }) => {});
+
+    queueEvents.on('stalled', async ({ jobId }) => {});
+
+    queueEvents.on('error', async error => {});
   }
 
   return QUEUES[name];
-} // END get
+}
 
-/**
- * Return a list of all the queues
- */
 function getAll() {
   return Object.entries(QUEUES);
 }
 
-/**
- * Close all queues
- *
- * return: true/false
- */
 async function closeAll() {
   // grab list of queue names
   const queueNames = Object.keys(QUEUES);
@@ -43,13 +42,14 @@ async function closeAll() {
   // close all queues
   for (let i = 0; i < queueNames.length; i++) {
     try {
-      const q = QUEUES[queueNames[i]];
+      const { queue, queueEvents } = QUEUES[queueNames[i]];
 
-      // gracefully disconnect
-      q.client.disconnect();
-      await q.close();
+      await queue.close();
+      await queueEvents.close();
     } catch (err) {
       console.error(err);
     }
   }
-} // END closeAll
+}
+
+export default { QUEUES, get, getAll, closeAll, connection };

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import models from 'models';
-import { validate } from 'class-validator';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
 import queue from 'service/queue';
+import { V1SendUserEmailConfirmEmailProps } from 'app/User/worker/V1SendUserEmailConfirmEmail';
 
 const UserQueue = queue.get('UserQueue');
 
@@ -48,7 +48,8 @@ export default async function (req: IRequest) {
   });
   await user.save();
 
-  await UserQueue.add('V1SendUserEmailConfirmEmail', { id: user.id });
+  const data: V1SendUserEmailConfirmEmailProps = { id: user.id };
+  await UserQueue.queue.add('V1SendUserEmailConfirmEmail', data);
 
   return {
     status: 200,

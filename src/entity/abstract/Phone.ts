@@ -1,4 +1,4 @@
-import { Check, Column } from 'typeorm';
+import { Check, Column, Index } from 'typeorm';
 import { Constructor } from './type';
 
 function Phone<TBase extends Constructor>(Base: TBase) {
@@ -16,6 +16,9 @@ function Phone<TBase extends Constructor>(Base: TBase) {
   (phone_update_token IS NOT NULL
     AND phone_update_token_sent_at IS NOT NULL
     AND phone_update_token_expired_at IS NOT NULL)`)
+  @Index(['phone'], { unique: true, where: 'deleted_at IS NULL' })
+  @Index(['phoneConfirmToken'], { unique: true })
+  @Index(['phoneUpdateToken'], { unique: true })
   abstract class AbstractBase extends Base {
     @Column({ type: 'character varying', nullable: true })
     phone: string | null;
@@ -24,7 +27,7 @@ function Phone<TBase extends Constructor>(Base: TBase) {
     @Column({ type: 'boolean', default: false })
     isPhoneConfirmed: boolean;
 
-    @Column({ type: 'character varying', nullable: true, unique: true })
+    @Column({ type: 'character varying', nullable: true })
     phoneConfirmToken: string | null;
 
     @Column({ type: 'timestamp without time zone', nullable: true })
@@ -34,7 +37,7 @@ function Phone<TBase extends Constructor>(Base: TBase) {
     phoneConfirmTokenExpiredAt: Date | null;
 
     // Phone Update
-    @Column({ type: 'character varying', nullable: true, unique: true })
+    @Column({ type: 'character varying', nullable: true })
     phoneUpdateToken: string | null;
 
     @Column({ type: 'timestamp without time zone', nullable: true })

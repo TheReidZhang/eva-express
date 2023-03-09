@@ -1,15 +1,17 @@
 import { z } from 'zod';
-import { Job } from 'bull';
+import { Job } from 'bullmq';
 import models from 'models';
 import { generateToken } from 'helper/logic';
 import email from 'service/email';
 import UserConfirmEmailEmail, { UserConfirmEmailEmailProps } from '../email/UserEmailConfirmEmail';
 
+const schema = z.object({
+  id: z.string(),
+});
+
+export type V1SendUserEmailConfirmEmailProps = z.infer<typeof schema>;
 export default async function V1SendUserEmailConfirmEmail(job: Job) {
   console.log(`V1SendUserEmailConfirmEmail - ${job.id}`);
-  const schema = z.object({
-    id: z.string(),
-  });
 
   const result = schema.safeParse(job.data);
   if (!result.success) throw new Error(`V1SendUserEmailConfirmEmail Invalid Args: ${result.error.issues}`);

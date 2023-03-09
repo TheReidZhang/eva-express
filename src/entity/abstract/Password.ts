@@ -1,4 +1,4 @@
-import { BeforeInsert, BeforeUpdate, Check, Column } from 'typeorm';
+import { BeforeInsert, BeforeUpdate, Check, Column, Index } from 'typeorm';
 import { Constructor } from './type';
 import bcrypt from 'bcrypt';
 import { PASSWORD_LENGTH_MIN } from 'helper/constant';
@@ -11,14 +11,16 @@ function Password<TBase extends Constructor>(Base: TBase) {
   (password_reset_token IS NOT NULL
     AND password_reset_token_sent_at IS NOT NULL
     AND password_reset_token_expired_at IS NOT NULL)`)
+  @Index(['salt'], { unique: true })
+  @Index(['passwordResetToken'], { unique: true })
   abstract class AbstractBase extends Base {
-    @Column({ type: 'text', unique: true })
+    @Column({ type: 'text' })
     salt: string;
 
     @Column({ type: 'text' })
     password: string;
 
-    @Column({ type: 'character varying', nullable: true, unique: true })
+    @Column({ type: 'character varying', nullable: true })
     passwordResetToken: string | null;
 
     @Column({ type: 'timestamp without time zone', nullable: true })

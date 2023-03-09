@@ -6,7 +6,6 @@
 
 'use strict';
 
-import { ValidationError } from 'class-validator';
 import { ZodError } from 'zod';
 
 /**
@@ -77,7 +76,7 @@ const ERRORS = {
   ...GLOBAL_ERRORS,
 };
 
-export { ERRORS, errorResponse, classValidatorErrorMessage, zodErrorMessage, queueError };
+export { ERRORS, errorResponse, zodErrorMessage, queueError };
 
 function errorResponse(req: any, error, errorMessage?: string) {
   return {
@@ -90,10 +89,6 @@ function errorResponse(req: any, error, errorMessage?: string) {
 
 function zodErrorMessage(error: ZodError): string {
   return error.issues.map(({ path, message }) => `${path.join('->')}:${message}`).join(',');
-}
-
-function classValidatorErrorMessage(errors: ValidationError[]) {
-  return errors.map(error => JSON.stringify(error.constraints)).join(',');
 }
 
 async function queueError(error, queue, job?) {

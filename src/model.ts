@@ -1,10 +1,10 @@
 import dataSource from 'orm';
 import User from 'entity/User';
 
-const models = {
+const model = {
   dataSource: dataSource,
   manager: dataSource.manager,
   user: User,
 };
 
-export default models;
+export default model;

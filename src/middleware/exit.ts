@@ -1,7 +1,7 @@
 import env from 'service/env';
 import queue from 'service/queue';
 import { Server } from 'http';
-import models from 'models';
+import model from 'model';
 import { ERRORS, errorResponse } from 'service/error';
 
 const { NODE_ENV } = env;
@@ -27,7 +27,7 @@ async function gracefulExit(server: Server) {
     await queue.closeAll();
     console.log('All queue connections are closed.');
 
-    await models.dataSource.destroy();
+    await model.dataSource.destroy();
     console.log('Database connection is closed.');
 
     // close socket io connection

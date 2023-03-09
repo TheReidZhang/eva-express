@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import models from 'models';
+import model from 'model';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
 import queue from 'service/queue';
@@ -29,14 +29,14 @@ export default async function (req: IRequest) {
   const args = result.data;
   const { email, password, firstName, lastName, gender, timezone, locale, phone } = args;
 
-  const existingUser = await models.user.findOne({
+  const existingUser = await model.user.findOne({
     where: {
       email,
     },
   });
   if (existingUser) return errorResponse(req, ERRORS.USER_ALREADY_EXISTS);
 
-  const user = models.user.create({
+  const user = model.user.create({
     email,
     password,
     firstName,

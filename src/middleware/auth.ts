@@ -1,7 +1,7 @@
 import env from 'service/env';
 import { Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import models from 'models';
+import model from 'model';
 import { Payload } from 'helper/type';
 import { ERRORS, errorResponse } from 'service/error';
 
@@ -15,13 +15,13 @@ async function auth(req: Request, res: Response, next: Function) {
       const { id, role } = jwt.verify(token, ACCESS_TOKEN_SECRET) as Payload;
       switch (role) {
         // case 'admin':
-        //   const admin = await models.admin.findOneBy({
+        //   const admin = await model.admin.findOneBy({
         //     id: id,
         //   });
         //   req.admin = admin;
         //   break;
         case 'user':
-          const user = await models.user.findOneByOrFail({
+          const user = await model.user.findOneByOrFail({
             id: id,
           });
           req['user'] = user;

@@ -1,7 +1,7 @@
 import env from 'service/env';
 import os from 'os';
 import throng from 'throng';
-import models from 'models';
+import model from 'model';
 import queue from 'service/queue';
 import UserWorker from 'app/User/worker';
 import _ from 'lodash';
@@ -21,7 +21,7 @@ async function startWorker(processId) {
 
   // to check if database connection is established
   try {
-    await models.dataSource.initialize();
+    await model.dataSource.initialize();
   } catch (error) {
     console.error('Fail to establish connection to the database', error);
     process.exit(1);
@@ -37,7 +37,7 @@ async function startWorker(processId) {
     console.log('All queue connections closed.');
 
     // close connection to database
-    await models.dataSource.destroy();
+    await model.dataSource.destroy();
     console.log('Database connections closed.');
 
     for (const worker of workers) await worker.close();

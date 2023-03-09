@@ -1,7 +1,7 @@
 import { Entity, Column } from 'typeorm';
 
 // helpers
-import { GENDER, GENDER_LIST, LOCALE, LOCALE_LIST, PASSWORD_LENGTH_MIN, TIMEZONE_LIST } from 'helper/constant';
+import { GENDER, GENDER_LIST, LOCALE, LOCALE_LIST, TIMEZONE_LIST } from 'helper/constant';
 import Base from 'entity/abstract/Base';
 import Email from 'entity/abstract/Email';
 import Phone from 'entity/abstract/Phone';

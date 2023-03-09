@@ -21,7 +21,7 @@ async function auth(req: Request, res: Response, next: Function) {
         //   req.admin = admin;
         //   break;
         case 'user':
-          const user = await model.user.findOneByOrFail({
+          const user = await model.userRepository.findOneByOrFail({
             id: id,
           });
           req['user'] = user;

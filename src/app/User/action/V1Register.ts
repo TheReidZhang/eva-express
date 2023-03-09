@@ -29,14 +29,14 @@ export default async function (req: IRequest) {
   const args = result.data;
   const { email, password, firstName, lastName, gender, timezone, locale, phone } = args;
 
-  const existingUser = await model.user.findOne({
+  const existingUser = await model.userRepository.findOne({
     where: {
       email,
     },
   });
   if (existingUser) return errorResponse(req, ERRORS.USER_ALREADY_EXISTS);
 
-  const user = model.user.create({
+  const user = model.userRepository.create({
     email,
     password,
     firstName,
@@ -46,7 +46,7 @@ export default async function (req: IRequest) {
     locale,
     phone,
   });
-  await user.save();
+  await model.userRepository.save(user);
 
   const data: V1SendUserEmailConfirmEmailProps = { id: user.id };
   await UserQueue.queue.add('V1SendUserEmailConfirmEmail', data);

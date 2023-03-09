@@ -21,7 +21,7 @@ export default async function (req: IRequest, res: IResponse) {
   const args = result.data;
   const { email, password } = args;
 
-  const existingUser = await model.user.findOne({
+  const existingUser = await model.userRepository.findOne({
     where: {
       email,
     },

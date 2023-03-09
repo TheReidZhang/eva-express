@@ -18,4 +18,6 @@ function Base<TBase extends Constructor>(Base: TBase) {
   return AbstractBase;
 }
 
-export default Base(BaseEntity);
+class EmptyBase {}
+
+export default Base(EmptyBase);

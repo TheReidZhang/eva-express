@@ -7,12 +7,12 @@ import { V1SendUserEmailConfirmEmailProps } from 'app/User/worker/V1SendUserEmai
 
 const UserQueue = queue.get('UserQueue');
 
-export default async function (req: IRequest) {
+async function V1Register(req: IRequest) {
   const schema = z.object({
     email: z
       .string()
       .email()
-      .transform(val => val.toLocaleLowerCase()),
+      .transform(val => val.toLowerCase()),
     firstName: z.string().trim().min(1),
     lastName: z.string().trim().min(1),
     gender: z.nativeEnum(GENDER),
@@ -52,10 +52,9 @@ export default async function (req: IRequest) {
   await UserQueue.queue.add('V1SendUserEmailConfirmEmail', data);
 
   return {
-    status: 200,
+    status: 201,
     success: true,
-    data: {
-      user,
-    },
   };
 }
+
+export default V1Register;

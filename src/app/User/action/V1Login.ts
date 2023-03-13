@@ -1,11 +1,10 @@
 import { z } from 'zod';
-
 import bcrypt from 'bcrypt';
 import model from 'model';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { createAccessToken, createRefreshToken } from 'helper/auth';
 
-export default async function (req: IRequest, res: IResponse) {
+async function V1Login(req: IRequest, res: IResponse) {
   const schema = z.object({
     email: z
       .string()
@@ -44,3 +43,5 @@ export default async function (req: IRequest, res: IResponse) {
     },
   };
 }
+
+export default V1Login;

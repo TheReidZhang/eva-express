@@ -46,6 +46,11 @@ const GLOBAL_ERRORS = {
     status: 400,
   },
 
+  USER_DOES_NOT_EXIST: {
+    errorCode: 'USER_DOES_NOT_EXIST',
+    status: 404,
+  },
+
   INVALID_PHONE_NUMBER: {
     errorCode: 'INVALID_PHONE_NUMBER',
     status: 400,

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import model from 'model';
 
-export default async function V1ConfirmEmail(req: IRequest) {
+async function V1ConfirmEmail(req: IRequest) {
   const schema = z.object({
     emailConfirmToken: z.string(),
   });
@@ -36,3 +36,5 @@ export default async function V1ConfirmEmail(req: IRequest) {
     };
   });
 }
+
+export default V1ConfirmEmail;

@@ -1,3 +1,7 @@
+BigInt.prototype['toJSON'] = function () {
+  return this.toString();
+};
+
 import env from 'service/env';
 import os from 'os';
 import throng from 'throng';
@@ -14,7 +18,7 @@ async function startServer(processId: number) {
   const server = await createServer();
 
   try {
-    await model.dataSource.initialize();
+    await model.db.initialize();
   } catch (error) {
     console.error('Fail to establish connection to the database', error);
     process.exit(1);

@@ -4,6 +4,8 @@ import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
 import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
 import queue from 'service/queue';
 import { V1SendUserEmailConfirmEmailProps } from 'app/User/worker/V1SendUserEmailConfirmEmail';
+import { eq } from 'drizzle-orm/expressions';
+import _ from 'lodash';
 
 const UserQueue = queue.get('UserQueue');
 
@@ -29,26 +31,25 @@ async function V1Register(req: IRequest) {
   const args = result.data;
   const { email, password, firstName, lastName, gender, timezone, locale, phone } = args;
 
-  const existingUser = await model.userRepository.findOne({
-    where: {
-      email,
-    },
-  });
+  const existingUser = await model.db.select().from(model.user).where(eq(model.user.email, email));
   if (existingUser) return errorResponse(req, ERRORS.USER_ALREADY_EXISTS);
 
-  const user = model.userRepository.create({
-    email,
-    password,
-    firstName,
-    lastName,
-    gender,
-    timezone,
-    locale,
-    phone,
-  });
-  await model.userRepository.save(user);
+  const [user] = await model.db
+    .insert(model.user)
+    .values({
+      email,
+      password,
+      salt: '123',
+      firstName,
+      lastName,
+      gender,
+      timezone,
+      locale,
+      phone,
+    })
+    .returning();
 
-  const data: V1SendUserEmailConfirmEmailProps = { id: user.id };
+  const data: V1SendUserEmailConfirmEmailProps = { id: _.toString(user.id) };
   await UserQueue.queue.add('V1SendUserEmailConfirmEmail', data);
 
   return {

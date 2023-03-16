@@ -4,6 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import model from 'model';
 import { Payload } from 'helper/type';
 import { ERRORS, errorResponse } from 'service/error';
+import { and, asc, desc, eq, or } from 'drizzle-orm/expressions';
 
 const { ACCESS_TOKEN_SECRET } = env;
 
@@ -21,9 +22,10 @@ async function auth(req: Request, res: Response, next: Function) {
         //   req.admin = admin;
         //   break;
         case 'user':
-          const user = await model.userRepository.findOneByOrFail({
-            id: id,
-          });
+          const user = await model.db
+            .select()
+            .from(model.user)
+            .where(eq(model.user.id, BigInt(id)));
           req['user'] = user;
           req['role'] = 'user';
           break;

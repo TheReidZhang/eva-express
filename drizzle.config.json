@@ -1,0 +1,4 @@
+{
+  "out": "./migration",
+  "schema": "./src/schema"
+}

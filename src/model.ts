@@ -1,11 +1,9 @@
-import dataSource from 'orm';
-import User from 'entity/User';
+import db from 'db';
+import { user } from 'schema/User';
 
 const model = {
-  dataSource: dataSource,
-  manager: dataSource.manager,
-  user: User,
-  userRepository: dataSource.getRepository(User),
+  db: db,
+  user: user,
 };
 
 export default model;

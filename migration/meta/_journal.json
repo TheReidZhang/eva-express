@@ -1,0 +1,18 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1678942934523,
+      "tag": "0000_nifty_vengeance"
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1678943874760,
+      "tag": "0001_sloppy_doomsday"
+    }
+  ]
+}

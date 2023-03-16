@@ -1,7 +1,7 @@
 import { boolean, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 const Phone = {
-  phone: varchar('phone').notNull(),
+  phone: varchar('phone'),
 
   // Phone Confirm
   isPhoneConfirmed: boolean('is_phone_confirmed').default(false).notNull(),

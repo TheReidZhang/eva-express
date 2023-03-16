@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import model from 'model';
 import { ERRORS, errorResponse, zodErrorMessage } from 'service/error';
-import { GENDER, LOCALE, PASSWORD_REGEX } from 'helper/constant';
+import { GENDER, LOCALE, PASSWORD_LENGTH_MIN, PASSWORD_REGEX } from 'helper/constant';
 import queue from 'service/queue';
 import { V1SendUserEmailConfirmEmailProps } from 'app/User/worker/V1SendUserEmailConfirmEmail';
 import { eq } from 'drizzle-orm/expressions';
 import _ from 'lodash';
+import { genSaltSync, hashSync } from 'bcrypt';
 
 const UserQueue = queue.get('UserQueue');
 
@@ -34,12 +35,15 @@ async function V1Register(req: IRequest) {
   const existingUser = await model.db.select().from(model.user).where(eq(model.user.email, email));
   if (existingUser) return errorResponse(req, ERRORS.USER_ALREADY_EXISTS);
 
+  const salt = genSaltSync(PASSWORD_LENGTH_MIN);
+  const hashedPassword = hashSync(password, salt);
+
   const [user] = await model.db
     .insert(model.user)
     .values({
       email,
-      password,
-      salt: '123',
+      password: hashedPassword,
+      salt,
       firstName,
       lastName,
       gender,
